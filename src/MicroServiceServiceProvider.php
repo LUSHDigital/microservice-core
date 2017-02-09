@@ -15,21 +15,14 @@ use Illuminate\Support\ServiceProvider;
  */
 class MicroServiceServiceProvider extends ServiceProvider
 {
-    // TODO: Add route definitions for micro service core endpoints.
-
-    /**
-     * Bootstrap the application events.
-     *
-     * @return void
-     */
-    public function boot()
-    {}
-
     /**
      * Register the application services.
      *
      * @return void
      */
     public function register()
-    {}
+    {
+        // Add our package routes.
+        $this->loadRoutesFrom(__DIR__ . '/Http/routes.php');
+    }
 }
