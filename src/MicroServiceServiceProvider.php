@@ -23,6 +23,9 @@ class MicroServiceServiceProvider extends ServiceProvider
     public function register()
     {
         // Add our package routes.
-        $this->loadRoutesFrom(__DIR__ . '/Http/routes.php');
+        require_once __DIR__ . '/Http/routes.php';
+
+        // Let Laravel Ioc Container know about our Controller
+        $this->app->make('LushDigital\MicroServiceCore\Http\Controllers\MicroServiceController');
     }
 }

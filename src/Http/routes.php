@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Microservice Base Routes
@@ -11,5 +9,5 @@ use Illuminate\Support\Facades\Route;
 | Don't edit these unless you have a very good reason.
 | No really, don't edit them!
 */
-Route::get('/', 'MicroServiceController@info');
-Route::get('/healthz', 'MicroServiceController@health');
+$this->app->get('/', 'LushDigital\MicroServiceCore\Http\Controllers\MicroServiceController@info');
+$this->app->get('/healthz', 'LushDigital\MicroServiceCore\Http\Controllers\MicroServiceController@health');

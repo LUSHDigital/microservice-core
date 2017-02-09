@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Contains \LushDigital\MicroServiceCore\Http\Controllers\MicroServiceBaseController.
+ * Contains \LushDigital\MicroServiceCore\Http\Controllers\MicroServiceController.
  */
 
 namespace LushDigital\MicroServiceCore\Http\Controllers;
