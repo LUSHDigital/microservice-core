@@ -17,7 +17,13 @@ The package also contains some convenience classes to help develop microservices
 * String handling trait
 
 ## Installation
-Just register the service provider with Lumen in the `bootstrap/app.php` file:
+Install the package as normal:
+
+```bash
+$ composer require lushdigital/microservice-core
+```
+
+Register the service provider with Lumen in the `bootstrap/app.php` file:
 ```php
 $app->register(LushDigital\MicroServiceCore\MicroServiceServiceProvider::class);
 ```
