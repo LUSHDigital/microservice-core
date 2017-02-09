@@ -6,12 +6,12 @@
 
 namespace LushDigital\MicroServiceCore\Http\Controllers;
 
-use LushDigital\MicroServiceCore\Traits\MicroServiceJsonResponseTrait;
 use Illuminate\Http\Response;
-use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Laravel\Lumen\Routing\Controller as BaseController;
 use LushDigital\MicroServiceCore\Helpers\MicroServiceHelper;
+use LushDigital\MicroServiceCore\Traits\MicroServiceJsonResponseTrait;
 
 /**
  * A base controller for use in microservices.

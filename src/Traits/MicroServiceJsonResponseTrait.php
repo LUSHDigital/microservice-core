@@ -5,6 +5,7 @@
  */
 
 namespace LushDigital\MicroServiceCore\Traits;
+
 use LushDigital\MicroServiceCore\Helpers\MicroServiceHelper;
 
 /**
