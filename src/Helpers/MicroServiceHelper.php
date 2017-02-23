@@ -72,7 +72,7 @@ class MicroServiceHelper
 
         // Ensure the data is in an array.
         if (is_object($data)) {
-            $data = array((array) $data);
+            $data = [(array) $data];
         }
 
         // Prepare the response object.
