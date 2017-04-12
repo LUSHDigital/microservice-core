@@ -1,0 +1,100 @@
+swagger: '2.0'
+
+info:
+  version: "0.1.0"
+  title: Microservice Response
+  
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+
+produces:
+  - application/json
+
+paths:
+  /:
+    get:
+      description: |
+        Retrieve information about this microservice.
+
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: '#/definitions/ServiceInfo'
+  
+  /healthz:
+    get:
+      description: |
+        Retrieve a health check for this microservice.
+
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: '#/definitions/Response'
+        
+        500:
+          description: Error response
+          schema:
+            $ref: '#/definitions/Response'
+
+  
+definitions:
+  Endpoint:
+    properties:
+      uri:
+        type: string
+      method:
+        type: string
+        enum:
+          - "GET"
+          - "POST"
+          - "PUT"
+          - "PATCH"
+          - "DELETE"
+  ServiceInfo:
+    required:
+      - service_name
+      - service_type
+      - service_scope
+      - service_version
+    properties:
+      service_name:
+        type: string
+      service_type:
+        type: string
+        default: "microservice"
+      service_scope:
+        type: string
+      service_version:
+        type: string
+        default: "0.0.1"
+      endpoints:
+        type: array
+        items:
+          $ref: '#/definitions/Endpoint'
+  Response:
+    required:
+      - status
+      - code
+      - message
+    properties:
+      status:
+        type: string
+        enum:
+          - "ok"
+          - "fail"
+        default: "ok"
+      code:
+        type: integer
+        format: int32
+        default: 200
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          type: object
