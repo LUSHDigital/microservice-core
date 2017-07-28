@@ -81,10 +81,15 @@ class MicroServiceHelper
         $response->code = $code;
         $response->message = $message;
 
-        // Only add the data if supplied.
+        // Return data in an array.
         if (!empty($data)) {
             $response->data = new stdClass();
             $response->data->{$type} = $data;
+        }
+        else {
+            // Return an empty array even if there are no data.
+            $response->data = new stdClass();
+            $response->data->{$type} = [];
         }
 
         return $response;
