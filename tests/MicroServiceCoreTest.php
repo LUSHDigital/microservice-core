@@ -90,6 +90,8 @@ class MicroServiceCoreTest extends PHPUnit_Framework_TestCase
         $expectedResponse->status = 'ok';
         $expectedResponse->code = 200;
         $expectedResponse->message = '';
+        $expectedResponse->data = new stdClass();
+        $expectedResponse->data->{$this->jsonResponseDataType} = [];
 
         return $expectedResponse;
     }
@@ -164,7 +166,7 @@ class MicroServiceCoreTest extends PHPUnit_Framework_TestCase
     public function testJsonResponseNoData()
     {
         // Build the test response data.
-        $jsonResponse = MicroServiceHelper::jsonResponseFormatter('', null, 200, 'ok');
+        $jsonResponse = MicroServiceHelper::jsonResponseFormatter($this->jsonResponseDataType, null, 200, 'ok');
 
         $this->assertEquals($jsonResponse, $this->getExpectedJsonResponseNoData());
     }
@@ -209,8 +211,6 @@ class MicroServiceCoreTest extends PHPUnit_Framework_TestCase
         // Test the date validation.
         $this->assertTrue($dateExample->validDate('Y-m-d', (new DateTime())->format('Y-m-d')));
         $this->assertFalse($dateExample->validDate('y-M-d', (new DateTime())->format('Y-m-d')));
-
-
     }
 
     /**

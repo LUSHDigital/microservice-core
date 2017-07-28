@@ -7,6 +7,7 @@
 namespace LushDigital\MicroServiceCore\Helpers;
 
 use Exception;
+use LushDigital\MicroServiceCore\Enum\Status;
 use stdClass;
 
 /**
@@ -60,10 +61,10 @@ class MicroServiceHelper
      *
      * @throws Exception
      */
-    public static function jsonResponseFormatter($type, $data, $code = 200, $status = 'ok', $message = '')
+    public static function jsonResponseFormatter($type, $data, $code = 200, $status = Status::OK, $message = '')
     {
         // Validate the arguments.
-        if (!empty($data) && empty($type)) {
+        if ($status == Status::OK && empty($type)) {
             throw new Exception('Cannot prepare response. No type specified');
         }
         else {
@@ -85,8 +86,7 @@ class MicroServiceHelper
         if (!empty($data)) {
             $response->data = new stdClass();
             $response->data->{$type} = $data;
-        }
-        else {
+        } elseif (!empty($type)) {
             // Return an empty array even if there are no data.
             $response->data = new stdClass();
             $response->data->{$type} = [];

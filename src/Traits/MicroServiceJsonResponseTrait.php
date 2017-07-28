@@ -6,6 +6,7 @@
 
 namespace LushDigital\MicroServiceCore\Traits;
 
+use LushDigital\MicroServiceCore\Enum\Status;
 use LushDigital\MicroServiceCore\Helpers\MicroServiceHelper;
 
 /**
@@ -31,7 +32,7 @@ trait MicroServiceJsonResponseTrait
      *
      * @return \Illuminate\Http\Response
      */
-    protected function generateResponse($type, $data, $code = 200, $status = 'ok', $message = '')
+    protected function generateResponse($type, $data, $code = 200, $status = Status::OK, $message = '')
     {
         $returnData = MicroServiceHelper::jsonResponseFormatter($type, $data, $code, $status, $message);
         return response()->json($returnData, $code);

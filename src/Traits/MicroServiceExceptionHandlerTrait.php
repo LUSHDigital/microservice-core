@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
+use LushDigital\MicroServiceCore\Enum\Status;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
@@ -86,7 +87,7 @@ trait MicroServiceExceptionHandlerTrait
             $message = $e->getMessage();
         }
 
-        return $this->generateResponse('', null, $statusCode, 'fail', $message);
+        return $this->generateResponse('', null, $statusCode, Status::FAIL, $message);
     }
 
     /**
@@ -102,7 +103,7 @@ trait MicroServiceExceptionHandlerTrait
         $reflection = new \ReflectionClass($e->getModel());
         $message = $reflection->getShortName() . ' not found';
 
-        return $this->generateResponse('', null, $statusCode, 'fail', $message);
+        return $this->generateResponse('', null, $statusCode, Status::FAIL, $message);
     }
 
     /**
@@ -118,7 +119,7 @@ trait MicroServiceExceptionHandlerTrait
         $message = $e->getMessage();
         $errorData = $e->getResponse()->getData();
 
-        return $this->generateResponse('errors', $errorData, $statusCode, 'fail', $message);
+        return $this->generateResponse('errors', $errorData, $statusCode, Status::FAIL, $message);
     }
 
     /**
@@ -133,6 +134,6 @@ trait MicroServiceExceptionHandlerTrait
         $statusCode = 500;
         $message = $e->getMessage();
 
-        return $this->generateResponse('', null, $statusCode, 'fail', $message);
+        return $this->generateResponse('', null, $statusCode, Status::FAIL, $message);
     }
 }

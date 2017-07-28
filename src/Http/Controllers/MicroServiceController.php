@@ -10,6 +10,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
+use LushDigital\MicroServiceCore\Enum\Status;
 use LushDigital\MicroServiceCore\Helpers\MicroServiceHelper;
 use LushDigital\MicroServiceCore\Traits\MicroServiceJsonResponseTrait;
 
@@ -75,9 +76,9 @@ class MicroServiceController extends BaseController
 
             // All of our service dependencies are working so build a valid
             // response object.
-            return $this->generateResponse('', null);
+            return $this->generateResponse('health', null);
         } catch (\Exception $e) {
-            return $this->generateResponse('', null, 500, 'fail', $e->getMessage());
+            return $this->generateResponse('', null, 500, Status::FAIL, $e->getMessage());
         }
     }
 }
