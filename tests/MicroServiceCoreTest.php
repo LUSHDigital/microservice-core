@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 use LushDigital\MicroServiceCore\Enum\BaseEnum;
 use LushDigital\MicroServiceCore\Helpers\MicroServiceHelper;
+use LushDigital\MicroServiceCore\Pagination\Paginator;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
@@ -253,6 +254,70 @@ class MicroServiceCoreTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('000Test', $stringExample->examplePadTrim('Test', '0', 7));
         $this->assertEquals('Test000', $stringExample->examplePadTrim('Test', '0', 7, STR_PAD_RIGHT));
         $this->assertEquals('0Test00', $stringExample->examplePadTrim('Test', '0', 7, STR_PAD_BOTH));
+    }
+
+    public function testPagination()
+    {
+        // Test the basics of pagination.
+        $paginator = new Paginator(100, 10, 1);
+        $this->assertEquals($paginator->getOffset(), 0);
+        $this->assertEquals($paginator->getLastPage(), 10);
+
+        $paginatorTwo = new Paginator(100, 10, 2);
+        $this->assertEquals($paginatorTwo->getOffset(), 10);
+        $this->assertEquals($paginatorTwo->getLastPage(), 10);
+
+        $paginatorThree = new Paginator(100, 7, 1);
+        $this->assertEquals($paginatorThree->getOffset(), 0);
+        $this->assertEquals($paginatorThree->getLastPage(), 15);
+
+        $paginatorFour = new Paginator(100, 7, 2);
+        $this->assertEquals($paginatorFour->getOffset(), 7);
+        $this->assertEquals($paginatorFour->getLastPage(), 15);
+
+        // Test changing values after creation.
+        $changedPaginator = new Paginator(100, 10, 1);
+        $changedPaginator->setPage(2);
+        $this->assertEquals($changedPaginator->getOffset(), 10);
+        $this->assertEquals($changedPaginator->getLastPage(), 10);
+
+        $changedPaginatorTwo = new Paginator(100, 10, 1);
+        $changedPaginatorTwo->setPerPage(50);
+        $this->assertEquals($changedPaginatorTwo->getOffset(), 0);
+        $this->assertEquals($changedPaginatorTwo->getLastPage(), 2);
+
+        $changedPaginatorThree = new Paginator(100, 10, 1);
+        $changedPaginatorThree->setTotal(19);
+        $this->assertEquals($changedPaginatorThree->getOffset(), 0);
+        $this->assertEquals($changedPaginatorThree->getLastPage(), 2);
+
+        $changedPaginatorFour = new Paginator(100, 10, 1);
+        $changedPaginator->setPage(2);
+        $changedPaginatorTwo->setPerPage(50);
+        $changedPaginatorFour->setTotal(19);
+        $this->assertEquals($changedPaginatorFour->getOffset(), 0);
+        $this->assertEquals($changedPaginatorFour->getLastPage(), 2);
+
+        // Test the pagination response.
+        $responsePaginator = new Paginator(100, 10, 1);
+        $this->assertEquals((array) [
+            'total' => 100,
+            'per_page' => 10,
+            'current_page' => 1,
+            'last_page' => 10,
+            'next_page' => 2,
+            'prev_page' => null
+        ], (array) $responsePaginator->preparePaginationResponse()->snakeFormat());
+
+        $responsePaginatorTwo = new Paginator(100, 10, 2);
+        $this->assertEquals((array) [
+            'total' => 100,
+            'per_page' => 10,
+            'current_page' => 2,
+            'last_page' => 10,
+            'next_page' => 3,
+            'prev_page' => 1
+        ], (array) $responsePaginatorTwo->preparePaginationResponse()->snakeFormat());
     }
 }
 
