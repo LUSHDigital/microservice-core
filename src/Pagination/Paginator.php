@@ -60,14 +60,26 @@ class Paginator
      */
     public function __construct($total, $perPage, $page)
     {
+        if (!is_int($total)) {
+            throw new \RuntimeException('Total value must be an integer.');
+        }
+
+        if (!is_int($perPage)) {
+            throw new \RuntimeException('Per page value must be an integer.');
+        }
+
+        if (!is_int($page)) {
+            throw new \RuntimeException('Page value must be an integer.');
+        }
+
         // Set up the basic pagination values.
-        $this->setTotal($total);
-        $this->setPerPage($perPage);
-        $this->setPage($page);
+        $this->total = $total;
+        $this->perPage = $perPage;
+        $this->page = $page;
 
         // Calculate the offset and last possible page based on these values.
-        $this->setOffset(($this->page - 1) * $this->perPage);
-        $this->setLastPage(ceil($total / $this->perPage));
+        $this->calculateOffset();
+        $this->calculateLastPage();
     }
 
     /**
@@ -88,6 +100,10 @@ class Paginator
         }
 
         $this->perPage = $perPage;
+
+        // Calculate the offset and last possible page based on this change.
+        $this->calculateOffset();
+        $this->calculateLastPage();
     }
 
     /**
@@ -108,6 +124,10 @@ class Paginator
         }
 
         $this->page = $page;
+
+        // Calculate the offset and last possible page based on this change.
+        $this->calculateOffset();
+        $this->calculateLastPage();
     }
 
     /**
@@ -116,18 +136,6 @@ class Paginator
     public function getOffset()
     {
         return $this->offset;
-    }
-
-    /**
-     * @param int $offset
-     */
-    public function setOffset($offset)
-    {
-        if (!is_int($offset)) {
-            throw new \RuntimeException('Offset value must be an integer.');
-        }
-
-        $this->offset = $offset;
     }
 
     /**
@@ -148,6 +156,10 @@ class Paginator
         }
 
         $this->total = $total;
+
+        // Calculate the offset and last possible page based on this change.
+        $this->calculateOffset();
+        $this->calculateLastPage();
     }
 
     /**
@@ -159,18 +171,6 @@ class Paginator
     }
 
     /**
-     * @param int $lastPage
-     */
-    public function setLastPage($lastPage)
-    {
-        if (!is_int($lastPage)) {
-            throw new \RuntimeException('Last page value must be an integer.');
-        }
-
-        $this->lastPage = $lastPage;
-    }
-
-    /**
      * Prepare the pagination response.
      *
      * @return Response
@@ -178,5 +178,29 @@ class Paginator
     public function preparePaginationResponse()
     {
         return new Response($this->total, $this->perPage, $this->page, $this->lastPage);
+    }
+
+    /**
+     * Calculate the offset based on the current values.
+     */
+    protected function calculateOffset()
+    {
+        if (empty($this->page) || empty($this->perPage)) {
+            throw new \RuntimeException('Cannot calculate offset. Insufficient data');
+        }
+
+        $this->offset = ($this->page - 1) * $this->perPage;
+    }
+
+    /**
+     * Calculate the last page based on the current values.
+     */
+    protected function calculateLastPage()
+    {
+        if (empty($this->total) || empty($this->perPage)) {
+            throw new \RuntimeException('Cannot calculate last page. Insufficient data');
+        }
+
+        $this->lastPage = (int) ceil($this->total / $this->perPage);
     }
 }
