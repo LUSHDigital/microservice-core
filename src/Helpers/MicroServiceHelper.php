@@ -46,18 +46,18 @@ class MicroServiceHelper
      * }
      *
      * @param string $type
-     *   The type of data being returned. Will be used to name the collection.
+     *     The type of data being returned. Will be used to name the collection.
      * @param object|array|NULL $data
-     *   The data to return. Will always be parsed into a collection.
+     *     The data to return. Will always be parsed into a collection.
      * @param int $code
-     *   HTTP status code for the response.
+     *     HTTP status code for the response.
      * @param string $status
-     *   A short status message. Examples: 'OK', 'Bad Request', 'Not Found'.
+     *     A short status message. Examples: 'OK', 'Bad Request', 'Not Found'.
      * @param string $message
-     *   A more detailed status message.
+     *     A more detailed status message.
      *
      * @return object
-     *   The formatted response object.
+     *     The formatted response object.
      *
      * @throws Exception
      */
