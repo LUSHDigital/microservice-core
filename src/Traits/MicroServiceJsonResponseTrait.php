@@ -59,13 +59,11 @@ trait MicroServiceJsonResponseTrait
      */
     protected function generatePaginatedResponse(Paginator $paginator, $type, $data, $code = 200, $status = Status::OK, $message = '')
     {
-        // Append the pagination response to the data.
-        if (is_array($data)) {
-            $data['pagination'] = $paginator->preparePaginationResponse()->snakeFormat();
-        } elseif (is_object($data)) {
-            $data->pagination = $paginator->preparePaginationResponse()->snakeFormat();
-        }
+        $returnData = MicroServiceHelper::jsonResponseFormatter($type, $data, $code, $status, $message);
 
-        return $this->generateResponse($type, $data, $code, $status, $message);
+        // Append the pagination response to the data.
+        $returnData->pagination = $paginator->preparePaginationResponse()->snakeFormat();
+
+        return response()->json($returnData, $code);
     }
 }

@@ -68,15 +68,40 @@ class MicroServiceCoreTest extends PHPUnit_Framework_TestCase
      */
     protected function getExpectedJsonResponse()
     {
-        $expectedResponse = new stdClass();
+        $expectedResponse = new stdClass;
         $expectedResponse->status = 'ok';
         $expectedResponse->code = 200;
         $expectedResponse->message = '';
-        $expectedResponse->data = new stdClass();
+        $expectedResponse->data = new stdClass;
         $expectedResponse->data->{$this->jsonResponseDataType} = $this->jsonResponseData;
 
         return $expectedResponse;
     }
+
+    /**
+     * Get the expected format for an example JSON response (pre encode).
+     *
+     * @return stdClass
+     */
+    protected function getExpectedPaginatedJsonResponse()
+    {
+        $expectedResponse = new stdClass;
+        $expectedResponse->status = 'ok';
+        $expectedResponse->code = 200;
+        $expectedResponse->message = '';
+        $expectedResponse->data = new stdClass;
+        $expectedResponse->data->{$this->jsonResponseDataType} = $this->jsonResponseData;
+        $expectedResponse->pagination = new stdClass;
+        $expectedResponse->pagination->total = 2;
+        $expectedResponse->pagination->per_page = 10;
+        $expectedResponse->pagination->current_page = 1;
+        $expectedResponse->pagination->last_page = 1;
+        $expectedResponse->pagination->next_page = null;
+        $expectedResponse->pagination->prev_page = null;
+
+        return $expectedResponse;
+    }
+
 
     /**
      * Get the expected format for an example JSON response (pre encode).
@@ -318,6 +343,23 @@ class MicroServiceCoreTest extends PHPUnit_Framework_TestCase
             'next_page' => 3,
             'prev_page' => 1
         ], (array) $responsePaginatorTwo->preparePaginationResponse()->snakeFormat());
+    }
+
+    /**
+     * Check the JSON response formatter is providing a valid response.
+     *
+     * @return void
+     */
+    public function testPaginatedJsonResponse()
+    {
+        // Set up the paginator.
+        $paginator = new Paginator(count($this->jsonResponseData), 10, 1);
+
+        // Build the test response data.
+        $jsonResponse = MicroServiceHelper::jsonResponseFormatter($this->jsonResponseDataType, $this->jsonResponseData, 200, 'ok');
+        $jsonResponse->pagination = $paginator->preparePaginationResponse()->snakeFormat();
+
+        $this->assertEquals($jsonResponse, $this->getExpectedPaginatedJsonResponse());
     }
 }
 
