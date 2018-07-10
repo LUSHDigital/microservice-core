@@ -197,7 +197,12 @@ class Paginator
      */
     protected function calculateLastPage()
     {
-        if (empty($this->total) || empty($this->perPage)) {
+        if (empty($this->total)) {
+            $this->lastPage = 0;
+            return;
+        }
+
+        if (empty($this->perPage)) {
             throw new \RuntimeException('Cannot calculate last page. Insufficient data');
         }
 
