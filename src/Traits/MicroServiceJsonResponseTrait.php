@@ -34,7 +34,10 @@ trait MicroServiceJsonResponseTrait
      * @return \Illuminate\Http\Response
      */
     protected function generateResponse($type, $data, $code = 200, $status = Status::OK, $message = '')
-    {
+    {   
+        if ($code == 204) {
+            return response('', 204);
+        }
         $returnData = MicroServiceHelper::jsonResponseFormatter($type, $data, $code, $status, $message);
         return response()->json($returnData, $code);
     }
